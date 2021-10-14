@@ -5,7 +5,7 @@ import { FullMetadata } from '@firebase/storage-types'
 import { ProgressBar } from './elements'
 import { Button } from '../Button'
 import { IGlyphs } from '../Icons'
-import { Flex } from 'rebass'
+import { Flex } from 'rebass/styled-components'
 /*
 This component takes a folder storage path and uploads files to firebase storage
 onUploadSucess allows URLs of completed uploads to be passed back to parent component

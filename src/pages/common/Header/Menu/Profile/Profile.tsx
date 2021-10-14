@@ -5,7 +5,6 @@ import { inject, observer } from 'mobx-react'
 import Flex from 'src/components/Flex'
 import { Avatar } from 'src/components/Avatar'
 import { ProfileModal } from 'src/components/ProfileModal/ProfileModal'
-import theme from 'src/themes/styled.theme'
 import MenuMobileLink from 'src/pages/common/Header/Menu/MenuMobile/MenuMobileLink'
 import ProfileButtons from './ProfileButtons'
 import { MenuMobileLinkContainer } from '../MenuMobile/MenuMobilePanel'
@@ -21,9 +20,10 @@ interface IProps {
 
 interface IInjectedProps extends IProps {
   userStore: UserStore
+  themeStore: any
 }
 
-@inject('userStore')
+@inject('userStore', 'themeStore')
 @observer
 export default class Profile extends Component<IProps, IState> {
   constructor(props: IProps) {
@@ -42,6 +42,7 @@ export default class Profile extends Component<IProps, IState> {
 
   render() {
     const user = this.injected.userStore.user
+    const theme = this.injected.themeStore.currentTheme.styles
     const { showProfileModal } = this.state
     return (
       <>
