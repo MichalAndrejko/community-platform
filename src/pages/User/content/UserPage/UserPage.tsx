@@ -58,7 +58,7 @@ interface IBackgroundImageProps {
 
 interface InjectedProps extends RouteComponentProps<IRouterCustomParams> {
   userStore: UserStore
-  themeStore?: ThemeStore
+  themeStore: ThemeStore
 }
 
 interface IState {
@@ -372,9 +372,8 @@ export class UserPage extends React.Component<
 
   public render() {
     const { user, isLoading } = this.state
-    const theme = this.injected.themeStore.currentTheme.style
+    const theme = this.injected?.themeStore?.currentTheme.styles
 
-    console.log('render', user)
     if (isLoading) {
       return <Loader />
     }
