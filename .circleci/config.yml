@@ -236,6 +236,13 @@ jobs:
     steps:
       - setup_repo
 
+  test_functions:
+    docker: 
+      - image: timbru31/java-node:alpine-12
+    steps:
+      - setup_repo
+      - run: cd functions && yarn build && yarn emulator:test
+
   # Create a production build
   # NOTE - not currently used in test workflow as different build_env required for each machine
   build:
@@ -346,7 +353,9 @@ workflows:
           matrix:
             parameters:
               BUILD_ENV:
-                ['FORCE_COLOR=1 REACT_APP_SITE_VARIANT=test-ci']
+                ['FORCE_COLOR=1 REACT_APP_SITE_VARIANT=test-ci SKIP_PREFLIGHT_CHECK=true']
+      - test_functions: 
+          name: 'Functions Test'
       - test_e2e:
           name: e2e-<< matrix.CI_BROWSER >>-<< matrix.CI_NODE >>
           requires:
