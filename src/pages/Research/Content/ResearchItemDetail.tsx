@@ -54,7 +54,7 @@ const ResearchItemDetail = observer((props: IProps) => {
           moderateResearch={moderateResearch}
         />
         <Box my={16}>
-          {item.updates.map((update, index) => {
+          {item.updates.filter(Boolean).map((update, index) => {
             return (
               <Update
                 update={update}
