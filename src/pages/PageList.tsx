@@ -161,20 +161,11 @@ const termsPolicy = {
 }
 
 // community pages (various pages hidden on production build)
-const devCommunityPages = [howTo, maps, events, academy, ResearchModule]
-const prodCommunityPages = [howTo, maps, events, academy]
-const communityPages = ['preview', 'production'].includes(SITE)
-  ? prodCommunityPages
-  : devCommunityPages
-// community 'more' dropdown pages (various pages hidden on production build)
-const devCommunityPagesMore = []
-const prodCommunityPagesMore = []
-const communityPagesMore = ['preview', 'production'].includes(SITE)
-  ? prodCommunityPagesMore
-  : devCommunityPagesMore
+export const COMMUNITY_PAGES: IPageMeta[] = ['preview', 'production'].includes(SITE)
+? [howTo, maps, events, academy]
+: [howTo, maps, events, academy, ResearchModule]
 
-export const COMMUNITY_PAGES: IPageMeta[] = communityPages
-export const COMMUNITY_PAGES_MORE: IPageMeta[] = communityPagesMore
+export const COMMUNITY_PAGES_MORE: IPageMeta[] = []
 export const COMMUNITY_PAGES_PROFILE: IPageMeta[] = [settings]
 export const ADMIN_PAGES: IPageMeta[] = [admin]
 export const POLICY_PAGES: IPageMeta[] = [privacyPolicy, termsPolicy]
