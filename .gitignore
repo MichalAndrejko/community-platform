@@ -13,6 +13,10 @@ functions/backup.json
 /build
 /lib
 
+# Public, these files are generated internally
+public/manifest.json
+public/index.html
+
 # misc
 .DS_Store
 .env.local

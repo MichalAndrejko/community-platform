@@ -8,7 +8,7 @@ import path from 'path'
 import fs from 'fs'
 import * as Mustache from 'mustache'
 
-const files = ['index.html.mst']
+const files = ['index.html.mst', 'manifest.json.mst']
 
 // 2.
 require('dotenv').config({
