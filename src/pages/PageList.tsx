@@ -32,6 +32,7 @@ const PrivacyPolicy = lazy(() => import('./policy/privacy'))
 const TermsPolicy = lazy(() => import('./policy/terms'))
 
 export interface IPageMeta {
+  moduleName?: string
   path: string
   component: any
   title: string
@@ -67,7 +68,7 @@ const academy = {
       render={props => (
         // NOTE - for embed to work github.io site also must host at same path, i.e. /academy
         <ExternalEmbed
-          src={`https://onearmy.github.io${props.location.pathname}`}
+          src={`https://community.projectkamp.com/academy/start/intro.html`}
           {...props}
         />
       )}
@@ -161,9 +162,11 @@ const termsPolicy = {
 }
 
 // community pages (various pages hidden on production build)
-export const COMMUNITY_PAGES: IPageMeta[] = ['preview', 'production'].includes(SITE)
-? [howTo, maps, events, academy]
-: [howTo, maps, events, academy, ResearchModule]
+export const COMMUNITY_PAGES: IPageMeta[] = ['preview', 'production'].includes(
+  SITE,
+)
+  ? [howTo, maps, events, academy]
+  : [academy, ResearchModule] // [howTo, maps, events, academy, ResearchModule]
 
 export const COMMUNITY_PAGES_MORE: IPageMeta[] = []
 export const COMMUNITY_PAGES_PROFILE: IPageMeta[] = [settings]

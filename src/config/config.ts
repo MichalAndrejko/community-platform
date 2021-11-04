@@ -45,6 +45,9 @@ function getSiteVariant(
   gitBranch: string,
   env: typeof process.env,
 ): siteVariants {
+  console.log({
+    env,
+  });
   const devSiteVariant: siteVariants = localStorage.getItem(
     'devSiteVariant',
   ) as any
@@ -106,6 +109,15 @@ if (siteVariant === 'production') {
 const firebaseConfigs: { [variant in siteVariants]: IFirebaseConfig } = {
   /** Sandboxed dev site, all features available for interaction */
   dev_site: {
+    apiKey: "AIzaSyAfsE-ntXU0l4d2xHrsJ1DVgDFqLbDb9kk",
+    authDomain: "la-project-kamp-development.firebaseapp.com",
+    projectId: "la-project-kamp-development",
+    storageBucket: "la-project-kamp-development.appspot.com",
+    messagingSenderId: "868509486863",
+    databaseURL: 'https://la-project-kamp-development.firebaseio.com',
+    appId: "1:868509486863:web:e24ef72c814800a43cb87a",
+  },
+  beta_dev_site: {
     apiKey: 'AIzaSyChVNSMiYxCkbGd9C95aChr9GxRJtW6NRA',
     authDomain: 'precious-plastics-v4-dev.firebaseapp.com',
     databaseURL: 'https://precious-plastics-v4-dev.firebaseio.com',
@@ -157,6 +169,17 @@ const firebaseConfigs: { [variant in siteVariants]: IFirebaseConfig } = {
     storageBucket: e.REACT_APP_FIREBASE_STORAGE_BUCKET as string,
   },
 }
+
+/*
+
+What we want is load our config from the env variables
+rather than using this confused configuration file.
+
+The variables
+
+http://la-project-kamp-development.firebaseio.com/
+*/
+
 /*********************************************************************************************** /
                                         Exports
 /********************************************************************************************** */
@@ -164,6 +187,7 @@ const firebaseConfigs: { [variant in siteVariants]: IFirebaseConfig } = {
 export const SITE = siteVariant
 export const DEV_SITE_ROLE = devSiteRole
 export const FIREBASE_CONFIG = firebaseConfigs[siteVariant]
+console.log({FIREBASE_CONFIG});
 export const ALGOLIA_SEARCH_CONFIG = algoliaSearchConfig
 export const ALGOLIA_PLACES_CONFIG = algoliaPlacesConfig
 export const SENTRY_CONFIG = sentryConfig
@@ -192,6 +216,7 @@ interface IAlgoliaConfig {
 type siteVariants =
   | 'emulated_site'
   | 'dev_site'
+  | 'beta_dev_site'
   | 'test-ci'
   | 'staging'
   | 'production'

@@ -65,13 +65,13 @@ export class MenuMobilePanel extends Component {
               )
             })}
             <Profile isMobile={true} />
-            <MenuMobileLinkContainer>
+            {/* <MenuMobileLinkContainer>
               <MenuMobileExternalLink content={'Bazar'} href={BAZAR_URL} />
               <MenuMobileExternalLink
                 content={'Global Site'}
                 href={GLOBAL_SITE_URL}
               />
-            </MenuMobileLinkContainer>
+            </MenuMobileLinkContainer> */}
           </PanelMenu>
         </PanelContainer>
       </>

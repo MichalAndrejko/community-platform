@@ -6,6 +6,7 @@ Requirements
   * A Firebase Web App
   * [FireBase Hosting enabled](https://firebase.google.com/docs/hosting/quickstart#install-cli)
   * [Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart)
+  * Authentication
 * Firebase CLI tools locally
 * [Create an application](https://console.cloud.google.com/appengine/start/create)
 * Your project must be on the Blaze pay as you go pricing plan

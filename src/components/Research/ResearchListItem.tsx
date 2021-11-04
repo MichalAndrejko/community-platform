@@ -72,7 +72,7 @@ const ResearchListItem: React.FC<IProps> = ({ item }) => (
 )
 
 const getUpdateText = (item: IResearch.ItemDB) => {
-  const count = item.updates?.length || 0
+  const count = item.updates?.filter(Boolean).length || 0
   const text = count === 1 ? 'update' : 'updates'
   return `${count} ${text}`
 }

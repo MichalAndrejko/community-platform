@@ -20,6 +20,7 @@ const DB_PREFIX = sessionStorage.DB_PREFIX || e.REACT_APP_DB_PREFIX || ''
  * const allHowtos = await db.get(DB_ENDPOINTS.howtos)
  * ```
  */
+console.log({DB_PREFIX});
 export const DB_ENDPOINTS = generateDBEndpoints(DB_PREFIX)
 
 export type DBEndpoint = keyof typeof DB_ENDPOINTS

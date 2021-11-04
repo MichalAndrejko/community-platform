@@ -34,7 +34,7 @@ export class ResearchStore extends ModuleStore {
     super.init()
 
     this.allDocs$.subscribe((docs: IResearch.ItemDB[]) => {
-      console.log('docs', docs)
+      console.log('research docs', docs)
       const sortedItems = docs.sort((a, b) =>
         a._modified < b._modified ? 1 : -1,
       )

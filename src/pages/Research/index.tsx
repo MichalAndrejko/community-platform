@@ -12,6 +12,7 @@ import ResearchRoutes from './research.routes'
  * experimental projects
  */
 export const ResearchModule: IPageMeta = {
+  moduleName: 'research',
   path: '/research',
   component: <ResearchModuleContainer />,
   title: 'Research',

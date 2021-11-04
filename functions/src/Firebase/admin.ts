@@ -19,7 +19,12 @@ if (serviceAccount) {
   }
   admin.initializeApp({
     credential: admin.credential.cert(cert),
-    databaseURL: FIREBASE_CONFIG.databaseURL,
+    databaseURL: FIREBASE_CONFIG.databaseURL || "https://la-project-kamp-development.firebaseio.com/",
+    projectId: FIREBASE_CONFIG.projectId,
+  })
+  console.log({
+    credential: admin.credential.cert(cert),
+    databaseURL: FIREBASE_CONFIG.databaseURL || "https://la-project-kamp-development.firebaseio.com/",
     projectId: FIREBASE_CONFIG.projectId,
   })
 }

@@ -52,12 +52,14 @@ export default class ImageGallery extends PureComponent<IProps, IState> {
 
   /* eslint-disable @typescript-eslint/naming-convention*/
   UNSAFE_componentWillMount() {
-    const images = this.props.images.filter(img => img !== null)
-    const activeImage = images.length > 0 ? images[0] : null
-    this.setState({
-      activeImage,
-      images,
-    })
+    if (this.props.images) {
+      const images = this.props.images.filter(img => img !== null)
+      const activeImage = images.length > 0 ? images[0] : null
+      this.setState({
+        activeImage,
+        images,
+      })
+    }
   }
 
   setActive = image => {
