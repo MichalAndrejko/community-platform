@@ -22,6 +22,7 @@ import INITIAL_VALUES from './Template'
 import { Box } from 'rebass'
 import { Prompt } from 'react-router'
 import { toJS } from 'mobx'
+import { getSupportedModules, MODULE } from 'src/modules'
 
 interface IProps {}
 
@@ -32,6 +33,7 @@ interface IInjectedProps extends IProps {
 interface IState {
   formValues: IUserPP
   notification: { message: string; icon: string; show: boolean }
+  supportedModules?: string[]
   showDeleteDialog?: boolean
 }
 
@@ -94,6 +96,12 @@ export class UserSettings extends React.Component<IProps, IState> {
       })
       return { [FORM_ERROR]: 'Save Failed' }
     }
+  }
+
+  public async componentDidMount() {
+    this.setState({
+      supportedModules: await getSupportedModules(),
+    })
   }
 
   /**
@@ -183,7 +191,9 @@ export class UserSettings extends React.Component<IProps, IState> {
                           <ProfileGuidelines />
                         </Box>
                         {/* Note - for fields without fieldwrapper can just render via props method and bind to input */}
-                        <FocusSection />
+                        {this.state.supportedModules?.includes(MODULE.MAP) && (
+                          <FocusSection />
+                        )}
                         {/* Specific profile type fields */}
                         {values.profileType === 'workspace' && (
                           <WorkspaceSection />

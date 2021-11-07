@@ -8,12 +8,13 @@ import { SWUpdateNotification } from 'src/pages/common/SWUpdateNotification/SWUp
 import Main from 'src/pages/common/Layout/Main'
 import { Button } from 'src/components/Button'
 import {
-  COMMUNITY_PAGES,
   COMMUNITY_PAGES_PROFILE,
   COMMUNITY_PAGES_MORE,
   ADMIN_PAGES,
   NO_HEADER_PAGES,
   POLICY_PAGES,
+  getAvailablePageList,
+  IPageMeta,
 } from './PageList'
 import { Link, Flex } from 'rebass'
 import DevSiteHeader from 'src/components/DevSiteHeader/DevSiteHeader'
@@ -21,22 +22,30 @@ import DevSiteHeader from 'src/components/DevSiteHeader/DevSiteHeader'
 interface IState {
   singlePageMode: boolean
   displayPageComponent?: any
+  supportedRoutes?: IPageMeta[]
 }
 
 export class Routes extends React.Component<any, IState> {
+  componentDidMount() {
+    getAvailablePageList().then(menuItems => {
+      this.setState({
+        supportedRoutes: [
+          ...menuItems,
+          ...COMMUNITY_PAGES_PROFILE,
+          ...COMMUNITY_PAGES_MORE,
+          ...ADMIN_PAGES,
+          ...NO_HEADER_PAGES,
+          ...POLICY_PAGES,
+        ],
+      })
+    })
+  }
+
   public render() {
-    const pages = [
-      ...COMMUNITY_PAGES,
-      ...COMMUNITY_PAGES_PROFILE,
-      ...COMMUNITY_PAGES_MORE,
-      ...ADMIN_PAGES,
-      ...NO_HEADER_PAGES,
-      ...POLICY_PAGES,
-    ]
     // we are rendering different pages and navigation dependent on whether the user has navigated directly to view the
     // entire site, or just one page of it via subdomains. This is so we can effectively integrate just parts of this
     // platform into other sites. The first case is direct nav
-    return (
+    return this.state?.supportedRoutes ? (
       <Flex height={'100vh'} flexDirection="column" data-cy="page-container">
         <BrowserRouter>
           <SWUpdateNotification />
@@ -48,7 +57,7 @@ export class Routes extends React.Component<any, IState> {
             <Header />
             <Suspense fallback={<div></div>}>
               <Switch>
-                {pages.map(page => (
+                {(this.state.supportedRoutes || []).map(page => (
                   <Route
                     exact={page.exact}
                     path={page.path}
@@ -96,6 +105,8 @@ export class Routes extends React.Component<any, IState> {
           </Button>
         </Link>
       </Flex>
+    ) : (
+      'Loading'
     )
   }
 }

@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { COMMUNITY_PAGES } from 'src/pages/PageList'
+import { getAvailablePageList } from 'src/pages/PageList'
 import theme from 'src/themes/styled.theme'
 import { Flex } from 'rebass/styled-components'
 import styled from 'styled-components'
@@ -40,11 +40,21 @@ const MenuLink = styled(NavLink).attrs(() => ({
 `
 
 export class MenuDesktop extends Component {
+  state = {
+    menuItems: null,
+  }
+
+  componentDidMount() {
+    getAvailablePageList().then(menuItems => {
+      this.setState({menuItems});
+    })
+  }
+
   render() {
-    return (
+    return this.state.menuItems ? (
       <>
         <Flex alignItems={'center'}>
-          {COMMUNITY_PAGES.map(page => {
+          {((this.state.menuItems || []) as any[]).map((page :any) => {
             const link = (
               <Flex key={page.path}>
                 <MenuLink to={page.path} data-cy="page-link">
@@ -62,6 +72,8 @@ export class MenuDesktop extends Component {
           })}
         </Flex>
       </>
+    ) : (
+      'Loading'
     )
   }
 }

@@ -5,6 +5,8 @@ import { Route } from 'react-router'
 import { UserRole } from 'src/models/user.models'
 import ExternalEmbed from 'src/components/ExternalEmbed/ExternalEmbed'
 import { ResearchModule } from './Research'
+import { getSupportedModules, MODULE } from 'src/modules'
+
 
 /**
  * Import all pages for use in lazy loading
@@ -48,6 +50,7 @@ const howTo = {
   component: <HowtoPage />,
   title: 'How-to',
   description: 'Welcome to how-to',
+  moduleName: MODULE.HOWTO,
 }
 const settings = {
   path: '/settings',
@@ -80,12 +83,14 @@ const academy = {
     flex: 1,
   },
   fullPageWidth: true,
+  moduleName: MODULE.ACADEMY,
 }
 const events = {
   path: '/events',
   component: <EventsPage />,
   title: 'Events',
   description: 'Welcome to Events',
+  moduleName: MODULE.EVENTS,
 }
 const maps = {
   path: '/map',
@@ -99,6 +104,7 @@ const maps = {
     width: '100vw',
   },
   fullPageWidth: true,
+  moduleName: MODULE.MAP,
 }
 const admin = {
   path: '/admin',
@@ -161,12 +167,20 @@ const termsPolicy = {
   description: '',
 }
 
+export async function getAvailablePageList(): Promise<IPageMeta[]> {
+  const enabledModules: string[] = await getSupportedModules()
+
+  return COMMUNITY_PAGES.filter(pageItem =>
+    enabledModules.includes(pageItem.moduleName || ''),
+  )
+}
+
 // community pages (various pages hidden on production build)
 export const COMMUNITY_PAGES: IPageMeta[] = ['preview', 'production'].includes(
   SITE,
 )
   ? [howTo, maps, events, academy]
-  : [academy, ResearchModule] // [howTo, maps, events, academy, ResearchModule]
+  : [howTo, maps, events, academy, ResearchModule]
 
 export const COMMUNITY_PAGES_MORE: IPageMeta[] = []
 export const COMMUNITY_PAGES_PROFILE: IPageMeta[] = [settings]

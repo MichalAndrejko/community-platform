@@ -4,6 +4,7 @@ import 'firebase/auth'
 import 'firebase/storage'
 import 'firebase/functions'
 import 'firebase/database'
+import 'firebase/remote-config'
 import { FIREBASE_CONFIG, SITE } from 'src/config/config'
 // initialise with config settings, additional firestore config to support future changes
 
@@ -15,6 +16,10 @@ const rtdb = firebase.database()
 const storage = firebase.storage()
 const auth = firebase.auth()
 const functions = firebase.functions()
+const remoteConfig = firebase.remoteConfig()
+
+// This value should be much longer in a production environment
+remoteConfig.settings.minimumFetchIntervalMillis = 10
 
 // use emulators when running on localhost:4000
 if (SITE === 'emulated_site') {
@@ -25,7 +30,7 @@ if (SITE === 'emulated_site') {
   functions.useEmulator('localhost', 4002)
 }
 
-export { firestore, rtdb, storage, auth, functions }
+export { firestore, rtdb, storage, auth, functions, remoteConfig }
 
 export const EmailAuthProvider = firebase.auth.EmailAuthProvider
 

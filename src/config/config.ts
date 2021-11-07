@@ -47,71 +47,6 @@ const branch = e.REACT_APP_BRANCH as string
 // On dev sites user can override default role
 const devSiteRole: UserRole = localStorage.getItem('devSiteRole') as UserRole
 
-function getSiteVariant(
-  gitBranch: string,
-  env: typeof process.env,
-): SiteVariants {
-  console.log({
-    env,
-  })
-  const devSiteVariant: SiteVariants = localStorage.getItem(
-    'devSiteVariant',
-  ) as any
-  if (devSiteVariant === 'preview') {
-    return 'preview'
-  }
-  if (devSiteVariant === 'emulated_site') {
-    return 'emulated_site'
-  }
-  if (devSiteVariant === 'dev_site') {
-    return 'dev_site'
-  }
-  if (location.host === 'localhost:4000') {
-    return 'emulated_site'
-  }
-  if (env.REACT_APP_SITE_VARIANT === 'test-ci') {
-    return 'test-ci'
-  }
-  if (env.REACT_APP_SITE_VARIANT === 'preview') {
-    return 'preview'
-  }
-  switch (gitBranch) {
-    case 'production':
-      return 'production'
-    case 'master':
-      return 'staging'
-    default:
-      return 'dev_site'
-  }
-}
-
-const siteVariant = getSiteVariant(branch, e)
-console.log(`[${siteVariant}] site`)
-
-/*********************************************************************************************** /
-                                        Production
-/********************************************************************************************** */
-
-// production config is passed as environment variables during CI build.
-if (siteVariant === 'production') {
-  // note, technically not required as supplied directly to firebase config() method during build
-  sentryConfig = {
-    dsn: e.REACT_APP_SENTRY_DSN as string,
-  }
-  // TODO - create production algolia config
-  algoliaSearchConfig = {
-    applicationID: '',
-    searchOnlyAPIKey: '',
-  }
-  algoliaPlacesConfig = {
-    applicationID: e.REACT_APP_ALGOLIA_PLACES_APP_ID as string,
-    searchOnlyAPIKey: e.REACT_APP_ALGOLIA_PLACES_API_KEY as string,
-  }
-  // disable console logs
-  // eslint-disable-next-line
-  console.log = () => {}
-}
-
 const firebaseConfigs: { [variant in SiteVariants]: IFirebaseConfig } = {
   /** Sandboxed dev site, all features available for interaction */
   dev_site: {
@@ -120,7 +55,7 @@ const firebaseConfigs: { [variant in SiteVariants]: IFirebaseConfig } = {
     projectId: 'la-project-kamp-development',
     storageBucket: 'la-project-kamp-development.appspot.com',
     messagingSenderId: '868509486863',
-    databaseURL: 'https://la-project-kamp-development.firebaseio.com',
+    databaseURL: 'https://la-project-kamp-development.europe-west1.firebasedatabase.app',
     appId: '1:868509486863:web:e24ef72c814800a43cb87a',
   },
   beta_dev_site: {
@@ -176,15 +111,70 @@ const firebaseConfigs: { [variant in SiteVariants]: IFirebaseConfig } = {
   },
 }
 
-/*
+function getSiteVariant(
+  gitBranch: string,
+  env: typeof process.env,
+): SiteVariants {
+  console.log({
+    env,
+  })
 
-What we want is load our config from the env variables
-rather than using this confused configuration file.
+  if (Object.keys(firebaseConfigs).includes(env.REACT_APP_SITE_VARIANT || '')) {
+    return env.REACT_APP_SITE_VARIANT as SiteVariants;
+  }
 
-The variables
+  const devSiteVariant: SiteVariants = localStorage.getItem(
+    'devSiteVariant',
+  ) as SiteVariants
 
-http://la-project-kamp-development.firebaseio.com/
-*/
+  if (devSiteVariant === 'preview') {
+    return 'preview'
+  }
+  if (devSiteVariant === 'emulated_site') {
+    return 'emulated_site'
+  }
+  if (devSiteVariant === 'dev_site') {
+    return 'dev_site'
+  }
+  if (location.host === 'localhost:4000') {
+    return 'emulated_site'
+  }
+  switch (gitBranch) {
+    case 'production':
+      return 'production'
+    case 'master':
+      return 'staging'
+    default:
+      return 'dev_site'
+  }
+}
+
+const siteVariant = getSiteVariant(branch, e)
+console.log(`[${siteVariant}] site`)
+
+/*********************************************************************************************** /
+                                        Production
+/********************************************************************************************** */
+
+// production config is passed as environment variables during CI build.
+if (siteVariant === 'production') {
+  // note, technically not required as supplied directly to firebase config() method during build
+  sentryConfig = {
+    dsn: e.REACT_APP_SENTRY_DSN as string,
+  }
+  // TODO - create production algolia config
+  algoliaSearchConfig = {
+    applicationID: '',
+    searchOnlyAPIKey: '',
+  }
+  algoliaPlacesConfig = {
+    applicationID: e.REACT_APP_ALGOLIA_PLACES_APP_ID as string,
+    searchOnlyAPIKey: e.REACT_APP_ALGOLIA_PLACES_API_KEY as string,
+  }
+  // disable console logs
+  // eslint-disable-next-line
+  console.log = () => {}
+}
 
 /*********************************************************************************************** /
                                         Exports
