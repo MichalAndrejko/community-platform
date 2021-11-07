@@ -10,7 +10,13 @@ Dev config is hardcoded - You can find more information about potential security
 https://javebratt.com/hide-firebase-api/
 *****************************************************************************************/
 
-import { UserRole } from 'src/models'
+import type {
+  ISentryConfig,
+  IAlgoliaConfig,
+  IFirebaseConfig,
+  SiteVariants,
+} from './types'
+import type { UserRole } from 'src/models'
 
 /*********************************************************************************************** /
                                         Dev/Staging
@@ -44,11 +50,11 @@ const devSiteRole: UserRole = localStorage.getItem('devSiteRole') as UserRole
 function getSiteVariant(
   gitBranch: string,
   env: typeof process.env,
-): siteVariants {
+): SiteVariants {
   console.log({
     env,
-  });
-  const devSiteVariant: siteVariants = localStorage.getItem(
+  })
+  const devSiteVariant: SiteVariants = localStorage.getItem(
     'devSiteVariant',
   ) as any
   if (devSiteVariant === 'preview') {
@@ -106,16 +112,16 @@ if (siteVariant === 'production') {
   console.log = () => {}
 }
 
-const firebaseConfigs: { [variant in siteVariants]: IFirebaseConfig } = {
+const firebaseConfigs: { [variant in SiteVariants]: IFirebaseConfig } = {
   /** Sandboxed dev site, all features available for interaction */
   dev_site: {
-    apiKey: "AIzaSyAfsE-ntXU0l4d2xHrsJ1DVgDFqLbDb9kk",
-    authDomain: "la-project-kamp-development.firebaseapp.com",
-    projectId: "la-project-kamp-development",
-    storageBucket: "la-project-kamp-development.appspot.com",
-    messagingSenderId: "868509486863",
+    apiKey: 'AIzaSyAfsE-ntXU0l4d2xHrsJ1DVgDFqLbDb9kk',
+    authDomain: 'la-project-kamp-development.firebaseapp.com',
+    projectId: 'la-project-kamp-development',
+    storageBucket: 'la-project-kamp-development.appspot.com',
+    messagingSenderId: '868509486863',
     databaseURL: 'https://la-project-kamp-development.firebaseio.com',
-    appId: "1:868509486863:web:e24ef72c814800a43cb87a",
+    appId: '1:868509486863:web:e24ef72c814800a43cb87a',
   },
   beta_dev_site: {
     apiKey: 'AIzaSyChVNSMiYxCkbGd9C95aChr9GxRJtW6NRA',
@@ -187,37 +193,8 @@ http://la-project-kamp-development.firebaseio.com/
 export const SITE = siteVariant
 export const DEV_SITE_ROLE = devSiteRole
 export const FIREBASE_CONFIG = firebaseConfigs[siteVariant]
-console.log({FIREBASE_CONFIG});
 export const ALGOLIA_SEARCH_CONFIG = algoliaSearchConfig
 export const ALGOLIA_PLACES_CONFIG = algoliaPlacesConfig
 export const SENTRY_CONFIG = sentryConfig
 export const VERSION = require('../../package.json').version
 export const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID
-
-/*********************************************************************************************** /
-                                        Interfaces
-/********************************************************************************************** */
-interface IFirebaseConfig {
-  apiKey: string
-  authDomain: string
-  databaseURL: string
-  projectId: string
-  storageBucket: string
-  messagingSenderId: string
-  appId?: string
-}
-interface ISentryConfig {
-  dsn: string
-}
-interface IAlgoliaConfig {
-  searchOnlyAPIKey: string
-  applicationID: string
-}
-type siteVariants =
-  | 'emulated_site'
-  | 'dev_site'
-  | 'beta_dev_site'
-  | 'test-ci'
-  | 'staging'
-  | 'production'
-  | 'preview'
