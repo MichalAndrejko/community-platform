@@ -93,6 +93,18 @@ export class HowtoList extends React.Component<any, IState> {
       referrerSource,
     } = this.props.howtoStore
 
+    if (!window.location.search) {
+      //empty selectedTags and input value in howToStore
+      this.props.howtoStore.updateSearchValue('')
+      this.props.howtoStore.selectedTags = ''
+    }
+
+    const target_copy = Object.assign({}, selectedTags)
+    
+    if (Object.keys(target_copy).length === 0) {
+      this.props.howtoStore.selectedTags = ''
+    }
+
     return (
       <>
         <Flex py={26}>
@@ -118,7 +130,9 @@ export class HowtoList extends React.Component<any, IState> {
         >
           <Flex width={[1, 1, 0.2]} mb={['10px', '10px', 0]}>
             <TagsSelect
-              value={selectedTags}
+              value={!this.props.location.search ? 
+                this.props.howtoStore.selectedTags = {}
+                : selectedTags}
               onChange={tags => {
                 updateQueryParams(
                   window.location.href,
@@ -135,7 +149,9 @@ export class HowtoList extends React.Component<any, IState> {
           </Flex>
           <Flex ml={[0, 0, '8px']} mr={[0, 0, 'auto']} mb={['10px', '10px', 0]}>
             <SearchInput
-              value={searchValue}
+              value={!this.props.location.search ? 
+                this.props.howtoStore.searchValue = ''
+                : searchValue}
               placeholder="Search for a how-to"
               onChange={value => {
                 updateQueryParams(window.location.href, 'search', value)

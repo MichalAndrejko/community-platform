@@ -57,6 +57,7 @@ export class HowtoStore extends ModuleStore {
     this.selectedTags = {}
     this.searchValue = ''
     this.referrerSource = ''
+  
   }
 
   @action
@@ -134,6 +135,9 @@ export class HowtoStore extends ModuleStore {
     this.selectedTags = tagKey
   }
 
+  public updateHistory(search: string){
+    this.searchValue = search;
+  }
   // Moderate Howto
   public async moderateHowto(howto: IHowto) {
     if (!hasAdminRights(toJS(this.activeUser))) {
